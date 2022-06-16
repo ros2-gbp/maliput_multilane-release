@@ -1,0 +1,63 @@
+# -*- yaml -*-
+
+# BSD 3-Clause License
+#
+# Copyright (c) 2022, Woven Planet. All rights reserved.
+# Copyright (c) 2019-2022, Toyota Research Institute. All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# * Redistributions of source code must retain the above copyright notice, this
+#   list of conditions and the following disclaimer.
+#
+# * Redistributions in binary form must reproduce the above copyright notice,
+#   this list of conditions and the following disclaimer in the documentation
+#   and/or other materials provided with the distribution.
+#
+# * Neither the name of the copyright holder nor the names of its
+#   contributors may be used to endorse or promote products derived from
+#   this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE
+# FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+# DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+# SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER
+# CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+# OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+# OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+---
+# distances are meters; angles are degrees.
+maliput_multilane_builder:
+  id: "long_start_and_end_lanes"
+  computation_policy: "prefer-accuracy"
+  scale_length: 1
+  lane_width: 6
+  left_shoulder: 5
+  right_shoulder: 5
+  elevation_bounds: [0, 5]
+  linear_tolerance: .01
+  angular_tolerance: 0.5
+  points:
+    start:
+      xypoint: [0, 0, 0]  # x,y, heading
+      zpoint: [0, 0, 0, 0]  # z, z_dot, theta (super-elevation), theta_dot
+  connections:
+    0:
+      lanes: [1, 0, 0]  # num_lanes, ref_lane, r_ref
+      start: ["ref", "points.start.forward"]
+      length: 1000
+      z_end: ["ref", [0, 0, 0]]
+    1:
+      lanes: [1, 0, 0]
+      start: ["ref", "connections.0.end.ref.forward"]
+      length: 10
+      z_end: ["ref", [0, 0, 0]]
+    2:
+      lanes: [1, 0, 0]
+      start: ["ref", "connections.1.end.ref.forward"]
+      length: 1000
+      z_end: ["ref", [0, 0, 0]]
